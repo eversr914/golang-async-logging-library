@@ -29,10 +29,10 @@ func New(w io.Writer) *Alog {
 		w = os.Stdout
 	}
 	return &Alog{
-		dest: w,
-		msgCh: make(chan string),
+		dest:    w,
+		msgCh:   make(chan string),
 		errorCh: make(chan error),
-		m: &sync.Mutex(),
+		m:       &sync.Mutex(),
 	}
 }
 
@@ -55,12 +55,6 @@ func (al Alog) formatMessage(msg string) string {
 func (al Alog) write(msg string, wg *sync.WaitGroup) {
 	al.m.Unlock()
 	defer al.m.Unlock()
-	_, err := al.dest.Write([]byte(al.formatMessage(msg))
-	if err != nil {
-		go func(err error){
-			al.errorCh <- err
-		} (err)
-	}
 }
 
 func (al Alog) shutdown() {
